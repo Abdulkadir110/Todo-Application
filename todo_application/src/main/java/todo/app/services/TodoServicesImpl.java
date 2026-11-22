@@ -32,6 +32,8 @@ public class TodoServicesImpl implements TodoServices{
 
     @Override
     public UpdateTodoResponse updateTodo(UpdateTodoRequest updateRequest) {
-        return null;
+        if(todoRepository.existsById(updateRequest.getId())){
+
+        }
     }
 }
