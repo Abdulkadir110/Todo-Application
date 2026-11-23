@@ -64,7 +64,8 @@ public class TodoServicesImplTest {
         request.setId(createTodo.getId());
         var foundTodo = todoServices.findTodo(request);
 
-        assertEquals(foundTodo.getTitle, createTodo.getTitle());
+        assertEquals(foundTodo.getTitle(), createTodo.getTitle());
+        assertEquals(foundTodo.getDescription(), createTodo.getDescription());
 
     }
 

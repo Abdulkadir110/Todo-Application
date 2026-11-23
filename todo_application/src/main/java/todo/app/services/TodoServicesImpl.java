@@ -10,6 +10,7 @@ import todo.app.dtos.requests.UpdateTodoRequest;
 import todo.app.dtos.responses.CreateTodoResponse;
 import todo.app.dtos.responses.FindTodoResponse;
 import todo.app.dtos.responses.UpdateTodoResponse;
+import todo.app.exceptions.TodoNotFoundException;
 
 import java.time.LocalDate;
 
@@ -36,8 +37,8 @@ public class TodoServicesImpl implements TodoServices{
 
     @Override
     public UpdateTodoResponse updateTodo(UpdateTodoRequest updateRequest) {
-        Todo foundTodo = todoRepository.findById(updateRequest.getId()).get();
-        if(foundTodo == null)return null;
+        Todo foundTodo = todoRepository.findById(updateRequest.getId())
+                .orElseThrow(() -> new TodoNotFoundException("Todo not found"));
         foundTodo.setTitle(updateRequest.getTitle());
         foundTodo.setDescription(updateRequest.getDescription());
         foundTodo.setUpdatedAt(LocalDate.now());
@@ -52,7 +53,8 @@ public class TodoServicesImpl implements TodoServices{
 
     @Override
     public FindTodoResponse findTodo(FindTodoRequest request) {
-        Todo foundTodo = todoRepository.findById(request.getId()).get();
+        Todo foundTodo = todoRepository.findById(request.getId())
+                .orElseThrow(() -> new TodoNotFoundException("Todo not found"));
         FindTodoResponse response = new FindTodoResponse();
         response.setTitle(foundTodo.getTitle());
         response.setCreatedAt(foundTodo.getCreatedAt());
