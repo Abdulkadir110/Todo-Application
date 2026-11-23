@@ -6,6 +6,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import todo.app.data.models.Todo;
 import todo.app.data.repostories.TodoRepository;
 import todo.app.dtos.requests.CreateTodoRequest;
+import todo.app.dtos.requests.DeleteTodoRequest;
 import todo.app.dtos.requests.FindTodoRequest;
 import todo.app.dtos.requests.UpdateTodoRequest;
 import todo.app.dtos.responses.CreateTodoResponse;
@@ -83,6 +84,16 @@ public class TodoServicesImplTest {
         request.setId("9234");
         request.setDescription("Wrong Description");
         assertThrows(TodoNotFoundException.class, () -> todoServices.updateTodo(request));
+    }
+    @Test
+    public void test_createTodo_CountIsOne_deleteTheTodo_Count_IsZero(){
+        todoRepository.deleteAll();
+        var createTodo = createTodo();
+        assertThat(todoRepository.count()).isEqualTo(1L);
+        DeleteTodoRequest request = new DeleteTodoRequest();
+        todoServices.delete(request);
+        assertThat(todoRepository.count()).isEqualTo(0L);
+
     }
 
 }

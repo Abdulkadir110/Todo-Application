@@ -5,9 +5,11 @@ import org.springframework.stereotype.Service;
 import todo.app.data.models.Todo;
 import todo.app.data.repostories.TodoRepository;
 import todo.app.dtos.requests.CreateTodoRequest;
+import todo.app.dtos.requests.DeleteTodoRequest;
 import todo.app.dtos.requests.FindTodoRequest;
 import todo.app.dtos.requests.UpdateTodoRequest;
 import todo.app.dtos.responses.CreateTodoResponse;
+import todo.app.dtos.responses.DeleteTodoResponse;
 import todo.app.dtos.responses.FindTodoResponse;
 import todo.app.dtos.responses.UpdateTodoResponse;
 import todo.app.exceptions.TodoNotFoundException;
@@ -59,6 +61,16 @@ public class TodoServicesImpl implements TodoServices{
         response.setTitle(foundTodo.getTitle());
         response.setCreatedAt(foundTodo.getCreatedAt());
         response.setDescription(foundTodo.getDescription());
+        return response;
+    }
+
+    @Override
+    public DeleteTodoResponse delete(DeleteTodoRequest request) {
+        Todo foundTodo = todoRepository.findById(request.getId())
+        .orElseThrow(() -> new TodoNotFoundException("Todo not found"));
+        todoRepository.delete(foundTodo);
+        DeleteTodoResponse response = new DeleteTodoResponse();
+        response.setDeleted(true);
         return response;
     }
 }
