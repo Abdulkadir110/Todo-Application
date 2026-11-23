@@ -91,7 +91,8 @@ public class TodoServicesImplTest {
         var createTodo = createTodo();
         assertThat(todoRepository.count()).isEqualTo(1L);
         DeleteTodoRequest request = new DeleteTodoRequest();
-        todoServices.delete(request);
+        request.setId(createTodo.getId());
+        todoServices.deleteTodo(request);
         assertThat(todoRepository.count()).isEqualTo(0L);
 
     }

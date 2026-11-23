@@ -16,5 +16,5 @@ public interface TodoServices {
 
     FindTodoResponse findTodo(FindTodoRequest request);
 
-    DeleteTodoResponse delete(DeleteTodoRequest request);
+    DeleteTodoResponse deleteTodo(DeleteTodoRequest request);
 }

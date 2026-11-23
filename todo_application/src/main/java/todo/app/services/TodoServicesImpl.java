@@ -65,9 +65,9 @@ public class TodoServicesImpl implements TodoServices{
     }
 
     @Override
-    public DeleteTodoResponse delete(DeleteTodoRequest request) {
+    public DeleteTodoResponse deleteTodo(DeleteTodoRequest request) {
         Todo foundTodo = todoRepository.findById(request.getId())
-        .orElseThrow(() -> new TodoNotFoundException("Todo not found"));
+            .orElseThrow(() -> new TodoNotFoundException("Todo not found"));
         todoRepository.delete(foundTodo);
         DeleteTodoResponse response = new DeleteTodoResponse();
         response.setDeleted(true);
