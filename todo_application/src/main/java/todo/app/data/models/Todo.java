@@ -3,6 +3,7 @@ package todo.app.data.models;
 import lombok.Data;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.Id;
+import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.time.LocalDate;
@@ -16,6 +17,7 @@ public class Todo {
     private String Description;
     @CreatedDate
     private LocalDate createdAt;
+    @LastModifiedDate
     private LocalDate updatedAt;
     private boolean completed;
 
