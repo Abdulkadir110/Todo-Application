@@ -9,6 +9,8 @@ import todo.app.dtos.requests.UpdateTodoRequest;
 import todo.app.dtos.responses.CreateTodoResponse;
 import todo.app.dtos.responses.UpdateTodoResponse;
 
+import java.time.LocalDate;
+
 @Service
 public class TodoServicesImpl implements TodoServices{
     private TodoRepository todoRepository;
@@ -32,8 +34,17 @@ public class TodoServicesImpl implements TodoServices{
 
     @Override
     public UpdateTodoResponse updateTodo(UpdateTodoRequest updateRequest) {
-        if(todoRepository.existsById(updateRequest.getId())){
+        Todo foundTodo = todoRepository.findById(updateRequest.getId()).get();
+        if(foundTodo == null)return null;
+        foundTodo.setTitle(updateRequest.getTitle());
+        foundTodo.setDescription(updateRequest.getDescription());
+        foundTodo.setUpdatedAt(LocalDate.now());
+        Todo updatedTodo = todoRepository.save(foundTodo);
+        UpdateTodoResponse response = new UpdateTodoResponse();
+        response.setTitle(updatedTodo.getTitle());
+        response.setDescription(updatedTodo.getDescription());
+        response.setUpdatedAt(updatedTodo.getUpdatedAt());
+        return response;
 
-        }
     }
 }
