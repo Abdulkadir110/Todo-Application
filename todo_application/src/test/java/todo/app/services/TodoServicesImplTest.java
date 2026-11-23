@@ -9,7 +9,7 @@ import todo.app.dtos.requests.CreateTodoRequest;
 import todo.app.dtos.requests.FindTodoRequest;
 import todo.app.dtos.requests.UpdateTodoRequest;
 import todo.app.dtos.responses.CreateTodoResponse;
-import todo.app.dtos.responses.UpdateTodoResponse;
+import todo.app.exceptions.TodoNotFoundException;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
@@ -67,6 +67,22 @@ public class TodoServicesImplTest {
         assertEquals(foundTodo.getTitle(), createTodo.getTitle());
         assertEquals(foundTodo.getDescription(), createTodo.getDescription());
 
+    }
+    @Test
+    public void test_FindATodo_WithWrongId_ThrowsException(){
+        todoRepository.deleteAll();
+        FindTodoRequest request = new FindTodoRequest();
+        request.setId("9281");
+        assertThrows(TodoNotFoundException.class, () -> todoServices.findTodo(request));
+    }
+    @Test
+    public void test_toUpdateATodoWithWrongId_ThrowsException(){
+        todoRepository.deleteAll();
+        var createTodo = createTodo();
+        UpdateTodoRequest request = new UpdateTodoRequest();
+        request.setId("9234");
+        request.setDescription("Wrong Description");
+        assertThrows(TodoNotFoundException.class, () -> todoServices.updateTodo(request));
     }
 
 }
