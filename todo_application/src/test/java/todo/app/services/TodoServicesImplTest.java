@@ -5,10 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import todo.app.data.models.Todo;
 import todo.app.data.repostories.TodoRepository;
-import todo.app.dtos.requests.CreateTodoRequest;
-import todo.app.dtos.requests.DeleteTodoRequest;
-import todo.app.dtos.requests.FindTodoRequest;
-import todo.app.dtos.requests.UpdateTodoRequest;
+import todo.app.dtos.requests.*;
 import todo.app.dtos.responses.CreateTodoResponse;
 import todo.app.exceptions.TodoNotFoundException;
 
@@ -95,6 +92,17 @@ public class TodoServicesImplTest {
         todoServices.deleteTodo(request);
         assertThat(todoRepository.count()).isEqualTo(0L);
 
+    }
+    @Test
+    public void test_createTodo_markCreatedTodo_As_Completed(){
+        todoRepository.deleteAll();
+        var createTodo = createTodo();
+        assertThat(createTodo.isCompleted()).isFalse();
+        CompletedTodoRequest request = new CompletedTodoRequest();
+        request.setId(createTodo.getId());
+        var completedTodo = todoServices.markCompleted(request);
+        assertThat(completedTodo.isCompleted()).isTrue();
+        assertThat(todoRepository.findById(createTodo.getId()).orElseThrow().isCompleted()).isTrue();
     }
 
 }

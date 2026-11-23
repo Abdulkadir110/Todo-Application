@@ -10,4 +10,5 @@ public class CreateTodoResponse {
     private String title;
     private String description;
     private LocalDate createdAt;
+    private boolean completed;
 }
