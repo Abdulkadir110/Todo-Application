@@ -6,10 +6,12 @@ import org.springframework.boot.test.context.SpringBootTest;
 import todo.app.data.models.Todo;
 import todo.app.data.repostories.TodoRepository;
 import todo.app.dtos.requests.CreateTodoRequest;
+import todo.app.dtos.requests.FindTodoRequest;
 import todo.app.dtos.requests.UpdateTodoRequest;
 import todo.app.dtos.responses.CreateTodoResponse;
 import todo.app.dtos.responses.UpdateTodoResponse;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
@@ -48,8 +50,22 @@ public class TodoServicesImplTest {
         updateRequest.setDescription("Updated Description");
         var updatedTodo = todoServices.updateTodo(updateRequest);
 
-        Todo foundUpdatedTodo = todoRepository.findById(updatedTodo.getId()).get();
+        Todo foundUpdatedTodo = todoRepository.findById(createdTodo.getId()).get();
         assertEquals(updatedTodo.getTitle(), foundUpdatedTodo.getTitle());
         assertEquals(updatedTodo.getUpdatedAt(), foundUpdatedTodo.getUpdatedAt());
+
+        assertThat(todoRepository.count()).isEqualTo(1L);
     }
+    @Test
+    public void testThatATodoCreated_CanBeFound() {
+        todoRepository.deleteAll();
+        var createTodo = createTodo();
+        FindTodoRequest request = new FindTodoRequest();
+        request.setId(createTodo.getId());
+        var foundTodo = todoServices.findTodo(request);
+
+        assertEquals(foundTodo.getTitle, createTodo.getTitle());
+
+    }
+
 }

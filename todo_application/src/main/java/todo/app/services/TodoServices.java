@@ -1,8 +1,10 @@
 package todo.app.services;
 
 import todo.app.dtos.requests.CreateTodoRequest;
+import todo.app.dtos.requests.FindTodoRequest;
 import todo.app.dtos.requests.UpdateTodoRequest;
 import todo.app.dtos.responses.CreateTodoResponse;
+import todo.app.dtos.responses.FindTodoResponse;
 import todo.app.dtos.responses.UpdateTodoResponse;
 
 public interface TodoServices {
@@ -10,4 +12,5 @@ public interface TodoServices {
 
     UpdateTodoResponse updateTodo(UpdateTodoRequest updateRequest);
 
+    FindTodoResponse findTodo(FindTodoRequest request);
 }

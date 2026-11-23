@@ -5,8 +5,10 @@ import org.springframework.stereotype.Service;
 import todo.app.data.models.Todo;
 import todo.app.data.repostories.TodoRepository;
 import todo.app.dtos.requests.CreateTodoRequest;
+import todo.app.dtos.requests.FindTodoRequest;
 import todo.app.dtos.requests.UpdateTodoRequest;
 import todo.app.dtos.responses.CreateTodoResponse;
+import todo.app.dtos.responses.FindTodoResponse;
 import todo.app.dtos.responses.UpdateTodoResponse;
 
 import java.time.LocalDate;
@@ -46,5 +48,15 @@ public class TodoServicesImpl implements TodoServices{
         response.setUpdatedAt(updatedTodo.getUpdatedAt());
         return response;
 
+    }
+
+    @Override
+    public FindTodoResponse findTodo(FindTodoRequest request) {
+        Todo foundTodo = todoRepository.findById(request.getId()).get();
+        FindTodoResponse response = new FindTodoResponse();
+        response.setTitle(foundTodo.getTitle());
+        response.setCreatedAt(foundTodo.getCreatedAt());
+        response.setDescription(foundTodo.getDescription());
+        return response;
     }
 }
