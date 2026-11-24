@@ -1,5 +1,6 @@
 package todo.app.services;
 
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -18,10 +19,13 @@ public class TodoServicesImplTest {
     private TodoServices todoServices;
     @Autowired
     private TodoRepository todoRepository;
+    @BeforeEach
+    public void setUp(){
+        todoRepository.deleteAll();
+    }
 
     @Test
     public void testThatATodoCanBeCreated(){
-        todoRepository.deleteAll();
         var createdTodo = createTodo();
         assertEquals(1L, todoRepository.count());
         Todo foundTodo = todoRepository.findById(createdTodo.getId()).get();
@@ -37,7 +41,6 @@ public class TodoServicesImplTest {
 
     @Test
     public void testThatTodoCreated_CanBeUpdated(){
-        todoRepository.deleteAll();
         var createdTodo = createTodo();
         Todo foundTodo = todoRepository.findById(createdTodo.getId()).get();
         assertEquals(createdTodo.getId(), foundTodo.getId());
@@ -56,7 +59,6 @@ public class TodoServicesImplTest {
     }
     @Test
     public void testThatATodoCreated_CanBeFound() {
-        todoRepository.deleteAll();
         var createTodo = createTodo();
         FindTodoRequest request = new FindTodoRequest();
         request.setId(createTodo.getId());
@@ -68,14 +70,12 @@ public class TodoServicesImplTest {
     }
     @Test
     public void test_FindATodo_WithWrongId_ThrowsException(){
-        todoRepository.deleteAll();
         FindTodoRequest request = new FindTodoRequest();
         request.setId("9281");
         assertThrows(TodoNotFoundException.class, () -> todoServices.findTodo(request));
     }
     @Test
     public void test_toUpdateATodoWithWrongId_ThrowsException(){
-        todoRepository.deleteAll();
         var createTodo = createTodo();
         UpdateTodoRequest request = new UpdateTodoRequest();
         request.setId("9234");
@@ -84,7 +84,6 @@ public class TodoServicesImplTest {
     }
     @Test
     public void test_createTodo_CountIsOne_deleteTheTodo_Count_IsZero(){
-        todoRepository.deleteAll();
         var createTodo = createTodo();
         assertThat(todoRepository.count()).isEqualTo(1L);
         DeleteTodoRequest request = new DeleteTodoRequest();
