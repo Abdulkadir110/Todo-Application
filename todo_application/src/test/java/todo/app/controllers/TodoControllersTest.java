@@ -1,5 +1,6 @@
 package todo.app.controllers;
 
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.test.web.servlet.MockMvc;
 import todo.app.exceptions.TodoExceptionHandler;
@@ -15,6 +16,7 @@ class TodoControllersTest {
     private TodoServices todoServices;
     private MockMvc mockMvc;
 
+    @BeforeEach
     public void setUp(){
         todoServices = mock(TodoServices.class);
         mockMvc = standaloneSetup(new TodoControllers(todoServices))
@@ -27,8 +29,8 @@ class TodoControllersTest {
                 .contentType("application/json")
                 .content("""
                         {
-                            "Title" : "";
-                            "Description" : "";
+                            "Title" : "",
+                            "Description" : ""
                         
                         }
                         """))

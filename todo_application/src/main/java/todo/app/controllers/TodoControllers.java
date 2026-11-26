@@ -5,7 +5,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import todo.app.dtos.requests.CreateTodoRequest;
 import todo.app.dtos.responses.ApiResponse;
@@ -19,8 +18,7 @@ public class TodoControllers {
         this.todoServices = todoServices;
     }
 
-    @PostMapping
-    @RequestMapping("/api/create-todo")
+    @PostMapping("/api/create-todo")
     public ResponseEntity<ApiResponse> createTodo(@Valid @RequestBody CreateTodoRequest request){
         CreateTodoResponse response = todoServices.createTodo(request);
         return ResponseEntity.status(HttpStatus.CREATED).body(new ApiResponse(true, response));
